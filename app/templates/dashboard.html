@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Welcome, {{ current_user.username }} ({{ current_user.role }})</h2>
+<a href="{{ url_for('main.create_incident') }}" class="btn btn-primary mb-3">Report New Incident</a>
+<a href="{{ url_for('auth.logout') }}" class="btn btn-danger mb-3 float-end">Logout</a>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th>Reported By</th>
+      <th>Assigned To</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for inc in incidents %}
+    <tr>
+      <td>{{ inc.id }}</td>
+      <td>{{ inc.title }}</td>
+      <td>{{ inc.status }}</td>
+      <td>{{ inc.priority }}</td>
+      <td>{{ inc.reported_by }}</td>
+      <td>{{ inc.assigned_to or "Unassigned" }}</td>
+      <td>
+        {% if current_user.role == 'admin' %}
+        <form method="POST" action="{{ url_for('main.assign_incident', id=inc.id) }}">
+          <select name="engineer" class="form-select form-select-sm mb-1">
+            {% for user in users %}
+              {% if user.role == 'engineer' %}
+              <option value="{{ user.username }}">{{ user.username }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+          <button class="btn btn-sm btn-warning">Assign</button>
+        </form>
+        {% endif %}
+        {% if current_user.role in ['admin', 'engineer'] and inc.status != 'Resolved' %}
+        <a href="{{ url_for('main.resolve_incident', id=inc.id) }}" class="btn btn-sm btn-success mt-1">Resolve</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
