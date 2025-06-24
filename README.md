@@ -1,6 +1,12 @@
 # 🚨 Incident Management System (Flask + SQLite + Docker + Email)
 
 A beginner-friendly, role-based Incident Management System built using Flask and SQLite — complete with Docker support and optional email notifications.
+---
+
+## 📖 Project Blog
+
+Read the full story behind this project on Medium: [Building an Open Source Incident Management System with Flask, SQLite, Docker & Email Alerts](https://medium.com/@vibhavakrishna999/building-an-open-source-incident-management-system-with-flask-sqlite-docker-email-alerts-c57932109a81)
+
 
 ---
 
